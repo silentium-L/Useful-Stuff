@@ -41,3 +41,16 @@ def verify_password(password: str, hashed_password: str, salt: bytes) -> bool:
     """
     test_hash, _ = hash_password(password, salt)
     return secrets.compare_digest(test_hash, hashed_password)
+
+
+def secure_input(prompt: str = "Input password: ") -> str:
+    """
+    Secure Input of the password in the terminal without echo
+
+    Args:
+        prompt: prompt of the password
+
+    Returns:
+        str: inputted password
+    """
+    return getpass.getpass(prompt)
