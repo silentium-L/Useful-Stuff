@@ -54,3 +54,18 @@ def secure_input(prompt: str = "Input password: ") -> str:
         str: inputted password
     """
     return getpass.getpass(prompt)
+
+
+def wipe_string(s: str) -> None:
+    """
+    tries to delete a string from the memory (limited usage in python due to garbage collection)
+    More of a formal function to show intent
+
+    Args:
+        s: the string that is to be deleted
+
+    Returns:
+        nothing
+    """
+    if hasattr(s, 'replace'):
+        s.replace(s, '\x00' * len(s))
