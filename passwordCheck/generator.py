@@ -77,6 +77,47 @@ def generate_password(length: int = 16,
     return password
 
 
+def generate_passphrase(num_words: int = 4,
+                        seperator: str = '-',
+                        capitalize: bool = True,
+                        add_numbers: bool = True) -> str:
+    """
+    Generating a secure passphrase (xkcd-Style)
+
+    :param num_words: Amount of words
+    :param seperator: Used seperator between words
+    :param capitalize: Capitalize first letter of a word
+    :param add_numbers: Add random numbers
+    :return: generated passphrase
+    """
+
+    selected_words = []
+
+    # Simple Wordlist. Should be replaced for a real case use -- Maybe with a external word source if needed
+    words = [
+        "apfel", "baum", "computer", "drache", "elefant", "feuer", "garten",
+        "haus", "insel", "jacke", "katze", "lampe", "maus", "nacht", "ozean",
+        "pferd", "quelle", "regen", "sonne", "tiger", "uhr", "vogel", "wasser",
+        "xylophon", "yacht", "zebra", "blume", "brief", "buch", "dach", "fisch"
+    ]
+
+    for _ in range(num_words):
+        word = secrets.choice(words)
+        if capitalize:
+            word = word.capitalize()
+        selected_words.append(word)
+
+    passphrase = seperator.join(selected_words)
+
+    if add_numbers:
+        # add 1-2 random numbers
+        num_count = secrets.randbelow(2) + 1
+        numbers = ''.join(str(secrets.randbelow(10)) for _ in range(num_count))
+        passphrase += seperator + numbers
+
+    return passphrase
+
+
 def _ensure_character_types(password: str, charset: str, use_uppercase: bool, use_lowercase: bool, use_digits: bool,
                             use_special: bool) -> str:
     """
