@@ -118,6 +118,16 @@ def generate_passphrase(num_words: int = 4,
     return passphrase
 
 
+def generate_secure_token(length: int = 32) -> str:
+    """
+    Generation of a cryptographic secure Token (URL-Safe)
+
+    :param length: Desired Token length
+    :return: URL-Safe Token
+    """
+    return secrets.token_urlsafe(length)
+
+
 def _ensure_character_types(password: str, charset: str, use_uppercase: bool, use_lowercase: bool, use_digits: bool,
                             use_special: bool) -> str:
     """
