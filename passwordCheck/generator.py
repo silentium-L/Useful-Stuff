@@ -8,7 +8,7 @@ Save Password and Passphrase generator
 
 
 def generate_password(length: int = 16,
-                      required: int = 10,
+                      min_length: int = 10,
                       use_uppercase: bool = True,
                       use_lowercase: bool = True,
                       use_digits: bool = True,
@@ -19,12 +19,12 @@ def generate_password(length: int = 16,
     Generate a cryptographic secure password
 
     :param length: wanted password length
-    :param required: required password length (should not be inputted by the user)
+    :param min_length: required password length (should not be inputted by the user)
     :param use_uppercase: use uppercase letters
     :param use_lowercase: use lowercase letters
     :param use_digits: use digits
     :param use_special: use special letters
-    :param exclude_ambiguous: exclude ambiguous characters
+    :param exclude_ambiguous: exclude ambiguous characters (l, o, I, O, 0, 1)
     :param custom_special: custom special letters
 
     returns:
@@ -33,8 +33,8 @@ def generate_password(length: int = 16,
 
     charset = ""
 
-    if length < required:
-        raise ValueError("Password too short. It needs to be at least " + str(required) + " characters long")
+    if length < min_length:
+        raise ValueError(f"Password too short. It needs to be at least {str(min_length)} characters long")
 
     # Generate charset that is supposed to be used
     if use_lowercase:
@@ -76,14 +76,14 @@ def generate_password(length: int = 16,
 
 
 def generate_passphrase(num_words: int = 4,
-                        seperator: str = '-',
+                        separator: str = '-',
                         capitalize: bool = True,
                         add_numbers: bool = True) -> str:
     """
     Generating a secure passphrase (xkcd-Style)
 
     :param num_words: Amount of words
-    :param seperator: Used seperator between words
+    :param separator: Used separator between words
     :param capitalize: Capitalize first letter of a word
     :param add_numbers: Add random numbers
     :return: generated passphrase
