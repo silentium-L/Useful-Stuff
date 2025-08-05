@@ -88,7 +88,7 @@ def _ensure_character_types(password: str, charset: str, use_uppercase: bool, us
     password_list = list(password)
 
     if use_uppercase and not any(c.isupper() for c in password):
-        uppercase_chars = [c for c in charset if c.islower()]
+        uppercase_chars = [c for c in charset if c.isupper()]
         if uppercase_chars:
             replacements.append(secrets.choice(uppercase_chars))
 
