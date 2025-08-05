@@ -20,7 +20,7 @@ def generate_password(length: int = 16,
 
     :param length: wanted password length
     :param required: required password length (should not be inputted by the user)
-    :param use_uppercase: user uppercase letters
+    :param use_uppercase: use uppercase letters
     :param use_lowercase: use lowercase letters
     :param use_digits: use digits
     :param use_special: use special letters
@@ -34,28 +34,26 @@ def generate_password(length: int = 16,
     charset = ""
 
     if length < required:
-        raise ValueError("Password to short. It needs to be at least " + str(required) + " characters long")
+        raise ValueError("Password too short. It needs to be at least " + str(required) + " characters long")
 
     # Generate charset that is supposed to be used
     if use_lowercase:
         chars = string.ascii_lowercase
         if exclude_ambiguous:
-            chars = chars.replace('1', '').replace('o', '')
+            chars = chars.replace('l', '').replace('o', '')
         charset += chars
-        del chars
 
     if use_uppercase:
         chars = string.ascii_uppercase
         if exclude_ambiguous:
             chars = chars.replace('I', '').replace('O', '')
         charset += chars
-        del chars
 
     if use_digits:
         chars = string.digits
         if exclude_ambiguous:
             chars = chars.replace('0', '').replace('1', '')
-        del chars
+        charset += chars
 
     if use_special:
         if custom_special:
@@ -63,7 +61,7 @@ def generate_password(length: int = 16,
         else:
             chars = "!@#$%^&*()_+-=[]{}|;:,.<>?"
             charset += chars
-        del chars
+
 
     if not charset:
         raise ValueError("No available characters selected. Generation can't be completed")
@@ -156,12 +154,6 @@ def _ensure_character_types(password: str, charset: str, use_uppercase: bool, us
         special_chars = [c for c in charset if c in string.punctuation]
         if special_chars:
             replacements_needed.append(secrets.choice(special_chars))
-
-    # generate random position for the replacement
-    for replacement in replacements_needed:
-        if password_list:  # Only if the password isn't empty
-            pos = secrets.randbelow(len(password_list))
-            password_list[pos] = replacement
 
     # Selection of a definitive Position (No crossings)
     available_positions = list(range(len(password_list)))
