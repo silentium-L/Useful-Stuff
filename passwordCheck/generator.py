@@ -134,38 +134,42 @@ def _ensure_character_types(password: str, charset: str, use_uppercase: bool, us
     Checks if all required character types are given
     """
 
-    replacements = []
-    checked_password = ''
+    replacements_needed = []
     password_list = list(password)
 
     if use_uppercase and not any(c.isupper() for c in password):
         uppercase_chars = [c for c in charset if c.isupper()]
         if uppercase_chars:
-            replacements.append(secrets.choice(uppercase_chars))
+            replacements_needed.append(secrets.choice(uppercase_chars))
 
     if use_lowercase and not any(c.islower() for c in password):
         lowercase_chars = [c for c in charset if c.islower()]
         if lowercase_chars:
-            replacements.append(secrets.choice(lowercase_chars))
+            replacements_needed.append(secrets.choice(lowercase_chars))
 
     if use_digits and not any(c.isdigit() for c in password):
         digit_chars = [c for c in charset if c.isdigit()]
         if digit_chars:
-            replacements.append(secrets.choice(digit_chars))
+            replacements_needed.append(secrets.choice(digit_chars))
 
     if use_special and not any(c in string.punctuation for c in password):
         special_chars = [c for c in charset if c in string.punctuation]
         if special_chars:
-            replacements.append(secrets.choice(special_chars))
+            replacements_needed.append(secrets.choice(special_chars))
 
     # generate random position for the replacement
-    for replacement in replacements:
+    for replacement in replacements_needed:
         if password_list:  # Only if the password isn't empty
             pos = secrets.randbelow(len(password_list))
             password_list[pos] = replacement
 
-    # recursive call of this function to ensure the replacement didn't destroy the requirement
-    checked_password = _ensure_character_types(''.join(password_list), charset, use_uppercase,
-                                               use_lowercase, use_digits, use_special)
+    # Selection of a definitive Position (No crossings)
+    available_positions = list(range(len(password_list)))
 
-    return checked_password
+    for replacement_char in replacements_needed:
+        if available_positions:
+            pos = secrets.choice(available_positions)
+            available_positions.remove(pos)  # remove position from potentials
+            password_list[pos] = replacement_char
+
+    return ''.join(password_list)
