@@ -62,7 +62,6 @@ def generate_password(length: int = 16,
             chars = "!@#$%^&*()_+-=[]{}|;:,.<>?"
             charset += chars
 
-
     if not charset:
         raise ValueError("No available characters selected. Generation can't be completed")
 
@@ -105,13 +104,13 @@ def generate_passphrase(num_words: int = 4,
             word = word.capitalize()
         selected_words.append(word)
 
-    passphrase = seperator.join(selected_words)
+    passphrase = separator.join(selected_words)
 
     if add_numbers:
         # add 1-2 random numbers
         num_count = secrets.randbelow(2) + 1
         numbers = ''.join(str(secrets.randbelow(10)) for _ in range(num_count))
-        passphrase += seperator + numbers
+        passphrase += separator + numbers
 
     return passphrase
 
